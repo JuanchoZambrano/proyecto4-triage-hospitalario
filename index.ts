@@ -132,8 +132,8 @@ export function consultarAdmisiones(): Promise<PacienteIngreso[]> {
 // 
 
 
-function determinarPrioridad(paciente: PacienteIngreso) {
-    paciente.forEach(p => {
+function determinarPrioridad(pacientes: PacienteIngreso[]) {
+    pacientes.forEach(p => {
         if (p.signos.oxigenoSpO2 < 90 || p.signos.presionSistolica > 120 || p.signos.presionSistolica < 50 ) {
             p.nivelPrioridad = 1;
         } else {
