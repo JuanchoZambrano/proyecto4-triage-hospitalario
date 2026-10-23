@@ -114,7 +114,20 @@ const pacientes: PacienteIngreso[] = [
 ];
 
 /* ---------------- DEV 2 - OSCAR ------------------- */
+export function consultarAdmisiones(): Promise<PacienteIngreso[]> {
+  return new Promise((resolve, reject) => {
 
+    setTimeout(() => {
+      const falla = Math.random() < 0.1; // 10% de probabilidad de error
+
+      if (falla) {
+        reject(new Error("Error: No se pudo comunicar con la base de emergencias."));
+      } else {
+        resolve(pacientes);
+      }
+    }, 2000); // 2 segundos de espera
+  });
+}   
 /* ---------------- DEV 3 - DERLYZ ------------------ */
 
 /* ---------------- DEV 4 - JESUS ------------------ */
