@@ -129,5 +129,22 @@ export function consultarAdmisiones(): Promise<PacienteIngreso[]> {
   });
 }   
 /* ---------------- DEV 3 - DERLYZ ------------------ */
+// 
 
+
+function determinarPrioridad(paciente: PacienteIngreso) {
+    paciente.forEach(p => {
+        if (p.signos.oxigenoSpO2 < 90 || p.signos.presionSistolica > 120 || p.signos.presionSistolica < 50 ) {
+            p.nivelPrioridad = 1;
+        } else {
+            if (p.edad > 65 || p.signos.presionSistolica > 140)  {
+                p.nivelPrioridad = 2;
+            } else {
+                p.nivelPrioridad = 3;
+            }
+        }        
+    });
+}
+// determinarPrioridad(pacientes);
+// console.log(pacientes);
 /* ---------------- DEV 4 - JESUS ------------------ */
