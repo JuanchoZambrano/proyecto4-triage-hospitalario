@@ -148,3 +148,56 @@ function determinarPrioridad(paciente: PacienteIngreso) {
 // determinarPrioridad(pacientes);
 // console.log(pacientes);
 /* ---------------- DEV 4 - JESUS ------------------ */
+/* ---------------- Orquestar e Imprimir ------------------- */
+
+async function procesarOrdenAtencion(listaPacientes: PacienteIngreso[]): Promise<PacienteIngreso[]> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (!listaPacientes || listaPacientes.length === 0) {
+        return reject(new Error("No hay pacientes registrados en el sistema de ingreso."));
+      }
+
+      const pacientesOrdenados = [...listaPacientes].sort((a, b) => {
+        const prioridadA = a.nivelPrioridad ?? 3;
+        const prioridadB = b.nivelPrioridad ?? 3;
+        return prioridadA - prioridadB;
+      });
+
+      resolve(pacientesOrdenados);
+    }, 1000);
+  });
+}
+
+async function main() {
+  console.log("Iniciando orquestación del sistema de triaje médico...\n");
+
+  try {
+    const ordenAtencion = await procesarOrdenAtencion(pacientes);
+
+    console.log("======================================================================");
+    console.log("Orden para atencion de pacientes (Prioridad Emergencia)");
+    console.log("======================================================================");
+
+    ordenAtencion.forEach((paciente, index) => {
+      const { nombre, nivelPrioridad, signos, historialId } = paciente;
+      
+      const esHipoxemiaGrave = signos.oxigenoSpO2 < 93;
+      
+      const alertaVisual = esHipoxemiaGrave 
+        ? `[ALERTA! HIPOXEMIA GRAVE - SpO2: ${signos.oxigenoSpO2}%]` 
+        : `[SpO2: ${signos.oxigenoSpO2}%]`;
+
+      console.log(
+        `${index + 1}. P${nivelPrioridad} | ID: ${historialId} | Paciente: ${nombre.padEnd(25)} | ${alertaVisual}`
+      );
+    });
+
+    console.log("======================================================================\n");
+    console.log("Proceso de asignación y triaje completado exitosamente.");
+
+  } catch (error: any) {
+    console.error("Error critico en la orquestacion:", error.message || error);
+  }
+}
+
+main();
